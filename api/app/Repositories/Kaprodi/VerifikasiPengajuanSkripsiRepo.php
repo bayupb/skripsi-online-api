@@ -169,53 +169,6 @@ class VerifikasiPengajuanSkripsiRepo
                     $data
                 );
             }
-
-            // if ($data->telah_disetujui_kaprodi == 1) {
-            //     return ResponseHelpers::ResponseSucces(
-            //         200,
-            //         'Pengajuan Skripsi dengan judul : ' .
-            //             $data->nama_pengajuan_skripsi .
-            //             ' ditolak',
-            //         $data
-            //     );
-            // }
-            // if ($data->telah_disetujui_kaprodi == 2) {
-            //     return ResponseHelpers::ResponseSucces(
-            //         200,
-            //         'Pengajuan Skripsi dengan judul : ' .
-            //             $data->nama_pengajuan_skripsi .
-            //             ' harus melakukan revisi',
-            //         $data
-            //     );
-            // }
-            // if ($data->telah_disetujui_kaprodi == 3) {
-            //     return ResponseHelpers::ResponseSucces(
-            //         200,
-            //         'Pengajuan Skripsi dengan judul : ' .
-            //             $data->nama_pengajuan_skripsi .
-            //             ' telah di acc',
-            //         $data
-            //     );
-            // }
-
-            // $notification = new NotificationPengajuanAcc();
-            // $notification->notification_pengajuan_acc_id = Str::uuid();
-            // $notification->mahasiswa_id = $data->mahasiswa_id;
-            // $notification->pengajuan_skripsi_id =
-            //     $data->telah_disetujui_kaprodi;
-            // dd($notification);
-
-            // $notification->save();
-
-            // dd($notification);
-
-            // return ResponseHelpers::ResponseSucces(
-            //     200,
-            //     'Pengajuan Skripsi dengan judul :' .
-            //         $data->username .
-            //         ' telah diverifikasi',
-            //     $data
-            // );
         } catch (\Throwable $th) {
             return ResponseHelpers::ResponseError(404, $th->getMessage());
         }

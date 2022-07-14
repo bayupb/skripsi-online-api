@@ -14,9 +14,18 @@ class MappingDospemMahasiswa extends Model
     {
         return $query
             ->whereNull($query->qualifyColumn('dihapus_pada'))
-
+            ->with(['getDospem'])
             ->selectRaw(
                 '*, ROW_NUMBER() over(ORDER BY mapping_mahasiswa_dospem_id DESC) no_urut'
             );
+    }
+
+    public function getDospem()
+    {
+        return $this->hasMany(
+            'App\Models\Dospem',
+            'dospem_id',
+            'dospem_id'
+        )->select('dospem_id', 'username', 'nidn', 'email');
     }
 }

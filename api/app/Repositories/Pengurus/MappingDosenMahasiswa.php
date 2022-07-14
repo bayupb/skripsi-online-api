@@ -2,11 +2,13 @@
 namespace App\Repositories\Pengurus;
 
 use Carbon\Carbon;
+use App\Models\Dospem;
+use App\Models\Mahasiswa;
+use Illuminate\Support\Str;
 use App\Helpers\ResponseHelpers;
 use App\Helpers\IndonesiaTimeHelpers;
-use App\Models\Mahasiswa;
 use App\Models\MappingDospemMahasiswa;
-use Facade\FlareClient\Http\Response;
+use App\Models\NotificationDospemMahasiswa;
 
 class MappingDosenMahasiswa
 {
@@ -120,13 +122,24 @@ class MappingDosenMahasiswa
                     'Data tidak ditemukan'
                 );
             }
-            dd($datas);
 
             $data->mahasiswa_id = $mahasiswaId;
             $data->dospem_1_id = $dospem1;
             $data->dospem_2_id = $dospem2;
-            dd($data);
-            // $data->save();
+            if ($data->save()) {
+                $notification = new NotificationDospemMahasiswa();
+                $notification->notification_mahasiswa_dospem_id = Str::uuid();
+                $notification->mahasiswa_id = $data->mahasiswa_id;
+                $notification->keterangan_dospem =
+                    'Kamu mendapatkan dospem 1 :' .
+                    $data->dospem_1_id .
+                    ' dan ' .
+                    $data->dospem_2_id;
+                $notification->dibuat_pada = IndonesiaTimeHelpers::IndonesiaDate(
+                    Carbon::now()
+                );
+                $notification->save();
+            }
 
             return ResponseHelpers::ResponseSucces(
                 200,
