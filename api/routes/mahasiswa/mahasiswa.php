@@ -59,8 +59,12 @@ Route::prefix('mahasiswa')->group(function () {
             ]);
         });
         Route::prefix('notifikasi')->group(function () {
-            Route::get('/', [
+            Route::get('/pengajuan-skripsi', [
                 App\Http\Controllers\Mahasiswa\NotificationPengajuanController::class,
+                'getList',
+            ]);
+            Route::get('/dosen-pembimbing', [
+                App\Http\Controllers\Mahasiswa\NotificationDospemController::class,
                 'getList',
             ]);
         });

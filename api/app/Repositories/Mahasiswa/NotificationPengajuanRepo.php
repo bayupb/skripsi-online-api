@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories\Mahasiswa;
 
+use Carbon\Carbon;
 use App\Helpers\ResponseHelpers;
 use App\Models\NotificationPengajuanAcc;
 
@@ -9,6 +10,7 @@ class NotificationPengajuanRepo
     public function getList()
     {
         try {
+            $date = Carbon::now()->addDays(7);
             $data = NotificationPengajuanAcc::query()
                 ->where(
                     'mahasiswa_id',
@@ -16,8 +18,10 @@ class NotificationPengajuanRepo
                         ->guard('api_mahasiswa')
                         ->user()->mahasiswa_id
                 )
+                ->whereDate('dibuat_pada', '<', $date)
                 ->data()
                 ->get();
+
             return ResponseHelpers::ResponseSucces(
                 200,
                 'Sukses mengambil data',

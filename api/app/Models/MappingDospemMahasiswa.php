@@ -22,7 +22,7 @@ class MappingDospemMahasiswa extends Model
 
     public function getDospem()
     {
-        return $this->hasMany(
+        return $this->belongsTo(
             'App\Models\Dospem',
             'dospem_id',
             'dospem_id'

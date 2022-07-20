@@ -65,11 +65,9 @@ class GelombangSkripsiRepo
                     'Status Gelombang tidak boleh kosong'
                 );
             }
-
             $gelombangSkripsiId = isset($params['gelombang_skripsi_id'])
                 ? $params['gelombang_skripsi_id']
                 : '';
-
             if (strlen($gelombangSkripsiId) == 0) {
                 $data = new GelombangSkripsi();
                 $data->dibuat_pada = IndonesiaTimeHelpers::IndonesiaDate(
@@ -83,7 +81,6 @@ class GelombangSkripsiRepo
                         'Data tidak ditemukan'
                     );
                 }
-
                 if (!is_null($data->dihapus_pada)) {
                     return ResponseHelpers::ResponseError(
                         404,

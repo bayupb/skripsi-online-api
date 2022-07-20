@@ -32,8 +32,7 @@ class MappingDosenMahasiswaController extends Controller
                 'mapping_mahasiswa_dospem_id'
             ),
             'mahasiswa_id' => $req->input('mahasiswa_id'),
-            'dospem_1_id' => $req->input('dospem_1_id'),
-            'dospem_2_id' => $req->input('dospem_2_id'),
+            'dospem_id' => $req->input('dospem_id'),
         ];
 
         $data = $this->skripsi->getSimpan($data);

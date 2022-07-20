@@ -3,14 +3,11 @@
 namespace App\Repositories\Kaprodi;
 
 use Carbon\Carbon;
-use App\Models\Fakultas;
-use App\Models\Mahasiswa;
 use Illuminate\Support\Str;
 use App\Helpers\ResponseHelpers;
 use App\Models\PengajuanSkripsi;
 use App\Helpers\IndonesiaTimeHelpers;
 use App\Models\NotificationPengajuanAcc;
-use Illuminate\Support\Facades\DB;
 
 class VerifikasiPengajuanSkripsiRepo
 {
@@ -149,7 +146,7 @@ class VerifikasiPengajuanSkripsiRepo
                 $notification->pengajuan_skripsi_id = $pengajuanSkripsiId;
                 $notification->nama_pengajuan = $data->nama_pengajuan_skripsi;
                 $notification->deskripsi_notification =
-                    'Pengajuan skripsi dengan nama ' .
+                    'Pengajuan skripsi dengan judul ' .
                     $data->nama_pengajuan_skripsi .
                     ' di ' .
                     $data->telah_disetujui_kaprodi;

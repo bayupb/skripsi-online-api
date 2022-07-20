@@ -1,7 +1,8 @@
 <?php namespace App\Repositories\Dospem;
 
-use App\Helpers\ResponseHelpers;
 use App\Models\Dospem;
+use App\Helpers\ResponseHelpers;
+use Illuminate\Support\Facades\Auth;
 
 class AuthRepo
 {
@@ -48,38 +49,30 @@ class AuthRepo
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        return ResponseHelpers::ResponseLogin(
-            200,
-            auth()
-                ->guard('api_dospem')
-                ->user(),
-            $token
-        );
+        return ResponseHelpers::ResponseLogin(200, $admin, $token);
     }
 
     public function getUser()
     {
-        return response()->json(
-            [
-                'success' => true,
-                'user' => auth()
-                    ->guard('api_dospem')
-                    ->user(),
-            ],
-            200
-        );
+        try {
+            // $data = auth()
+            //     ->guard('api_dospem')
+            //     ->user();
+            return ResponseHelpers::ResponseSucces(200, true, auth()->user());
+
+            // return ResponseHelpers::ResponseSucces(200, 'Personal Data', $data);
+        } catch (\Throwable $th) {
+            return ResponseHelpers::ResponseError(400, $th->getMessage());
+        }
     }
 
     public function getLogout()
     {
-        auth()->logout();
-        return ResponseHelpers::ResponseSucces(200, 'Logout success', []);
-        //response "success" logout
-        return response()->json(
-            [
-                'success' => true,
-            ],
-            200
-        );
+        try {
+            Auth::logout();
+            return ResponseHelpers::ResponseSucces(200, 'Logout success', []);
+        } catch (\Throwable $th) {
+            return ResponseHelpers::ResponseError(400, $th->getMessage());
+        }
     }
 }

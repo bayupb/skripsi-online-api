@@ -2,7 +2,6 @@
 namespace App\Repositories\Pengurus;
 
 use Carbon\Carbon;
-use App\Models\Dospem;
 use App\Models\Mahasiswa;
 use Illuminate\Support\Str;
 use App\Helpers\ResponseHelpers;
@@ -15,11 +14,18 @@ class MappingDosenMahasiswa
     public function getMahasiswaPengajuanAcc()
     {
         try {
+            // $mappingDosenMahasiswa = MappingDospemMahasiswa::query()->whereDate(
+            //     'dibuat_pada',
+            //     '<',
+            //     Carbon::now()->addDays(7)
+            // );
+
             $data = Mahasiswa::data()
                 ->whereHas('getPengajuanSkripsi', function ($query) {
                     $query->where('telah_disetujui_kaprodi', 3);
                 })
                 ->get();
+
             return ResponseHelpers::ResponseSucces(
                 200,
                 'Sukses mengambil data',
@@ -60,22 +66,13 @@ class MappingDosenMahasiswa
                     'Nama mahasiswa skripsi tidak boleh kosong'
                 );
             }
-            $dospem1 = isset($params['dospem_1_id'])
-                ? $params['dospem_1_id']
+            $dosenPembimbing = isset($params['dospem_id'])
+                ? $params['dospem_id']
                 : '';
-            if (strlen($dospem1) == 0) {
+            if (strlen($dosenPembimbing) == 0) {
                 return ResponseHelpers::ResponseError(
                     404,
-                    'Nama Dospem 1 skripsi tidak boleh kosong'
-                );
-            }
-            $dospem2 = isset($params['dospem_2_id'])
-                ? $params['dospem_2_id']
-                : '';
-            if (strlen($dospem2) == 0) {
-                return ResponseHelpers::ResponseError(
-                    404,
-                    'Nama Dospem 2 skripsi tidak boleh kosong'
+                    'Nama Dosen Pembimbing tidak boleh kosong'
                 );
             }
 
@@ -109,32 +106,14 @@ class MappingDosenMahasiswa
                     Carbon::now()
                 );
             }
-
-            $datas = Mahasiswa::data()
-                ->where('mahasiswa_id', $mahasiswaId)
-                ->whereHas('getPengajuanSkripsi', function ($query) {
-                    $query->where('telah_disetujui_kaprodi', 3);
-                })
-                ->first();
-            if (!$datas) {
-                return ResponseHelpers::ResponseError(
-                    404,
-                    'Data tidak ditemukan'
-                );
-            }
-
             $data->mahasiswa_id = $mahasiswaId;
-            $data->dospem_1_id = $dospem1;
-            $data->dospem_2_id = $dospem2;
+            $data->dospem_id = $dosenPembimbing;
             if ($data->save()) {
                 $notification = new NotificationDospemMahasiswa();
                 $notification->notification_mahasiswa_dospem_id = Str::uuid();
                 $notification->mahasiswa_id = $data->mahasiswa_id;
                 $notification->keterangan_dospem =
-                    'Kamu mendapatkan dospem 1 :' .
-                    $data->dospem_1_id .
-                    ' dan ' .
-                    $data->dospem_2_id;
+                    'Kamu telah mendapatkan dosen pembimbing';
                 $notification->dibuat_pada = IndonesiaTimeHelpers::IndonesiaDate(
                     Carbon::now()
                 );

@@ -17,7 +17,7 @@ class AuthController extends Controller
     public function getLogin(Request $req)
     {
         $data = [
-            'email' => $req->input('email'),
+            'nidn' => $req->input('nidn'),
             'password' => $req->input('password'),
         ];
 

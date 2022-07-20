@@ -151,22 +151,25 @@ class AuthRepo
 
     public function getUser()
     {
-        return response()->json(
-            [
-                'success' => true,
-                'user' => auth()
-                    ->guard('api_kaprodi')
-                    ->user(),
-            ],
-            200
-        );
+        try {
+            return ResponseHelpers::ResponseSucces(200, true, auth()->user());
+            // return response()->json(
+            //     [
+            //         'success' => true,
+            //         'user' => auth()
+            //             ->guard('api_mahasiswa')
+            //             ->user(),
+            //     ],
+            //     200
+            // );
+        } catch (\Throwable $th) {
+            return ResponseHelpers::ResponseError(400, $th->getMessage());
+        }
     }
 
     public function getLogout()
     {
         auth()->logout();
-        return ResponseHelpers::ResponseSucces(200, 'Logout success', []);
-        //response "success" logout
         return response()->json(
             [
                 'success' => true,
