@@ -16,7 +16,6 @@ class BimbinganRepo
             $data = Bimbingan::query()
                 ->data()
                 ->get();
-            // dd($data);
             return ResponseHelpers::ResponseSucces(
                 200,
                 'Sukses mengambil data',

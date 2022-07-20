@@ -121,7 +121,6 @@ class DospemRepo
             $data->email = $email;
             $data->password = Hash::make($password);
 
-            // dd($data);
             $data->save();
 
             return ResponseHelpers::ResponseSucces(

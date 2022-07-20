@@ -21,7 +21,6 @@ class NotificationDospemRepo
                 ->data()
                 ->whereDate('dibuat_pada', '<', $date)
                 ->get();
-            dd($data);
             return ResponseHelpers::ResponseSucces(
                 200,
                 'Sukses mengambil data',
